@@ -1,6 +1,6 @@
 package com.bookstore.restapi.config.security.provider;
 
-import com.bookstore.domain.Customer;
+import com.bookstore.domain.CustomerDomain;
 import com.bookstore.restapi.config.security.UserPrincipal;
 import com.bookstore.restapi.config.security.token.JwtAuthenticationToken;
 import com.bookstore.restapi.exception.JwtTokenException;
@@ -28,7 +28,7 @@ public class JwtAuthenticationProvider extends AbstractUserDetailsAuthentication
         JwtAuthenticationToken jwtToken = (JwtAuthenticationToken) authToken;
         String token = jwtToken.getToken();
 
-        Customer parsedUser = jwtUtil.parsedToken(token);
+        CustomerDomain parsedUser = jwtUtil.parsedToken(token);
 
         if (parsedUser == null) throw new JwtTokenException("Jwt token is not valid");
 
