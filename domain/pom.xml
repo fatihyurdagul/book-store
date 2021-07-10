@@ -6,7 +6,7 @@
         <groupId>com.bookstore</groupId>
         <artifactId>getir-bookstore</artifactId>
         <version>1.0-SNAPSHOT</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <relativePath>../pom.xml</relativePath>
     </parent>
     <groupId>com.bookstore</groupId>
     <artifactId>domain</artifactId>
