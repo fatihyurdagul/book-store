@@ -23,7 +23,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final JwtUtil jwtUtil;
-    private final CustomerServiceImpl customerService;
 
     @Override
     public void configure(WebSecurity web) throws Exception {
@@ -40,11 +39,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable().cors()
                 .and().authorizeRequests().antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 .and().authorizeRequests().antMatchers(HttpMethod.POST, "/**/customers").permitAll()
-                .anyRequest().authenticated()
-                .and()
-                .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
-                .addFilterAfter(jwtAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class)
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+                .anyRequest().permitAll();
+//                .anyRequest().authenticated()
+//                .and()
+//                .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
+//                .addFilterAfter(jwtAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class)
+//                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     }
 
     private JwtAuthenticationFilter jwtAuthenticationFilter() throws Exception {

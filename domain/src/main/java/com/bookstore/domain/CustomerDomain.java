@@ -2,7 +2,8 @@ package com.bookstore.domain;
 
 import lombok.*;
 
-@Data
+@Getter
+@Setter
 public class CustomerDomain extends BaseDomain{
     private String name;
     private String surname;

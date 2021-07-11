@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class BaseDomain {
-    private String id;
-    private Long version;
+public class BookOrderDomain{
+    private BookDomain book;
+    private Integer quantity;
 }
