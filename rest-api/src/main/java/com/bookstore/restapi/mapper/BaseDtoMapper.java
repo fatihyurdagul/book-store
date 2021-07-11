@@ -2,7 +2,7 @@ package com.bookstore.restapi.mapper;
 
 import java.util.List;
 
-public interface BaseMapper<DomainObject, DTO> {
+public interface BaseDtoMapper<DomainObject, DTO> {
     DTO toDTO(DomainObject domainObject);
 
     List<DTO> toListDTO(List<DomainObject> domainObjects);

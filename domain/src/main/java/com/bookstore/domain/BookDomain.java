@@ -7,8 +7,6 @@ import lombok.NoArgsConstructor;
 import java.math.BigDecimal;
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
 public class BookDomain extends BaseDomain {
     private String title;
     private String author;

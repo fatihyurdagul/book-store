@@ -5,12 +5,14 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 
-public class UserPrincipal implements UserDetails {
+public class CustomerPrincipal implements UserDetails {
 
     private String username;
+    private String password;
 
-    public UserPrincipal(String username) {
+    public CustomerPrincipal(String username, String password) {
         this.username = username;
+        this.password = password;
     }
 
     @Override
@@ -20,7 +22,7 @@ public class UserPrincipal implements UserDetails {
 
     @Override
     public String getPassword() {
-        return null;
+        return password;
     }
 
     @Override

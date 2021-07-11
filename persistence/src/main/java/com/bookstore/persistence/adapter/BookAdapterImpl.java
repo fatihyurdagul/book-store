@@ -1,19 +1,19 @@
 package com.bookstore.persistence.adapter;
 
-import com.bookstore.adapterrepo.BookRepositoryAdapter;
+import com.bookstore.adapter.BookAdapter;
 import com.bookstore.domain.BookDomain;
+import com.bookstore.persistence.common.PersistenceAdapter;
 import com.bookstore.persistence.entity.BookEntity;
 import com.bookstore.persistence.mapper.BookEntityMapper;
 import com.bookstore.persistence.repository.BookRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Component
+@PersistenceAdapter
 @RequiredArgsConstructor
-public class BookRepositoryAdapterImpl implements BookRepositoryAdapter {
+public class BookAdapterImpl implements BookAdapter {
 
     private final BookRepository repository;
     private final BookEntityMapper mapper;

@@ -7,8 +7,6 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
 public class BaseDomain {
     private String id;
     private Long version;
