@@ -23,8 +23,7 @@ public class BookController {
     }
 
     @PostMapping
-    public ResponseEntity<Boolean> addBook(@Valid @RequestBody BookDto request) {
-        Boolean result = bookService.createBook(request);
-        return ResponseEntity.ok(result);
+    public ResponseEntity<BookDto> addBook(@Valid @RequestBody BookDto request) {
+        return ResponseEntity.ok(bookService.createBook(request));
     }
 }

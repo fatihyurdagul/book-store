@@ -1,19 +1,24 @@
 package com.bookstore.restapi.config.security;
 
+import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 
+@Getter
 public class CustomerPrincipal implements UserDetails {
 
     private String username;
     private String password;
+    private String customerId;
 
-    public CustomerPrincipal(String username, String password) {
+    public CustomerPrincipal(String username, String password, String customerId) {
         this.username = username;
         this.password = password;
+        this.customerId = customerId;
     }
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

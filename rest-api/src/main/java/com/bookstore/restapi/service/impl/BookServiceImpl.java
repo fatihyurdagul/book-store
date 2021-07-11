@@ -1,7 +1,9 @@
 package com.bookstore.restapi.service.impl;
 
 import com.bookstore.adapter.BookAdapter;
+import com.bookstore.adapter.StockAdapter;
 import com.bookstore.domain.BookDomain;
+import com.bookstore.domain.StockDomain;
 import com.bookstore.restapi.domain.BookDto;
 import com.bookstore.restapi.domain.request.UpdateStockRequestDto;
 import com.bookstore.restapi.mapper.BookDtoMapper;
@@ -18,20 +20,18 @@ import java.util.stream.Collectors;
 public class BookServiceImpl implements BookService {
 
     private final BookAdapter bookAdapter;
-    private final StockService stockService;
+    private final StockAdapter stockAdapter;
     private final BookDtoMapper mapper;
 
     @Override
-    public Boolean createBook(BookDto request) {
+    public BookDto createBook(BookDto request) {
         BookDomain bookDomain = mapper.toDomainObject(request);
         BookDomain result = bookAdapter.saveBook(bookDomain);
         // TODO : get stock info from request
-        UpdateStockRequestDto updateStock = UpdateStockRequestDto.builder()
-                .bookId(result.getId())
-                .stock(0)
-                .build();
+        StockDomain stockDomain = new StockDomain(result.getId(),0);
+        stockAdapter.createStockOfBook(stockDomain);
 
-        return stockService.updateBookOfStock(updateStock);
+        return mapper.toDTO(result);
     }
 
     @Override

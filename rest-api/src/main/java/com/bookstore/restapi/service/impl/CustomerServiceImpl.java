@@ -5,14 +5,12 @@ import com.bookstore.domain.CustomerDomain;
 import com.bookstore.restapi.config.security.CustomerPrincipal;
 import com.bookstore.restapi.domain.CustomerDto;
 import com.bookstore.restapi.domain.request.CustomerRegisterDto;
-import com.bookstore.restapi.domain.request.LoginRequestDto;
 import com.bookstore.restapi.enums.ErrorCodeEnum;
 import com.bookstore.restapi.exception.CustomRuntimeException;
 import com.bookstore.restapi.mapper.CustomerDtoMapper;
 import com.bookstore.restapi.service.CustomerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -22,7 +20,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class CustomerServiceImpl implements CustomerService, UserDetailsService {
+public class CustomerServiceImpl implements CustomerService {
 
     private final CustomerDtoMapper mapper;
     private final CustomerAdapter adapter;
@@ -44,6 +42,6 @@ public class CustomerServiceImpl implements CustomerService, UserDetailsService 
         if (!customerDomain.isPresent())
             throw new CustomRuntimeException(ErrorCodeEnum.CONTENT_NOT_FOUND);
 
-        return new CustomerPrincipal(username, customerDomain.get().getEncryptedPassword());
+        return new CustomerPrincipal(username, customerDomain.get().getEncryptedPassword(), customerDomain.get().getId());
     }
 }

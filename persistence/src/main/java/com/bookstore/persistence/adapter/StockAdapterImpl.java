@@ -9,6 +9,7 @@ import com.bookstore.persistence.repository.StockRepository;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @PersistenceAdapter
@@ -19,10 +20,34 @@ public class StockAdapterImpl implements StockAdapter {
     private final StockEntityMapper mapper;
 
     @Override
-    public Boolean updateStockOfBook(StockDomain stockOfBook) {
-        StockEntity stockEntity = mapper.toEntity(stockOfBook);
-        StockEntity result = repository.save(stockEntity);
-        return result != null;
+    public Optional<StockDomain> updateStockOfBook(StockDomain stockOfBook) {
+
+        Optional<StockEntity> stockEntity = repository.findStockEntityByBookId(stockOfBook.getBookId());
+        if (!stockEntity.isPresent()) return Optional.empty();
+
+
+        stockEntity.get().setStock(stockOfBook.getStock());
+        repository.save(stockEntity.get());
+        return Optional.of(mapper.toDomainObject(stockEntity.get()));
+    }
+
+    @Override
+    public Optional<StockDomain> createStockOfBook(StockDomain stockOfBook) {
+        StockEntity entity = repository.save(mapper.toEntity(stockOfBook));
+        return Optional.of(mapper.toDomainObject(entity));
+    }
+
+
+    @Override
+    public List<StockDomain> updateStockOfMultipleBook(List<StockDomain> stockOfBookList) {
+        List<StockEntity> stockEntities = mapper.toListEntity(stockOfBookList);
+        return repository.saveAll(stockEntities).stream().map(mapper::toDomainObject).collect(Collectors.toList());
+    }
+
+    @Override
+    public Optional<StockDomain> getStockOfBook(String bookId) {
+        Optional<StockEntity> stockOfBook = repository.findStockEntityByBookId(bookId);
+        return stockOfBook.stream().map(mapper::toDomainObject).findFirst();
     }
 
     @Override

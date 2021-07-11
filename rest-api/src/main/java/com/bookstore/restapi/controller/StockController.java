@@ -21,7 +21,7 @@ public class StockController {
     }
 
     @PutMapping("/book/{bookId}")
-    public ResponseEntity<Boolean> updateStockOfBook(@RequestBody Integer stock, @PathVariable String bookId) {
+    public ResponseEntity<StockDto> updateStockOfBook(@RequestBody Integer stock, @PathVariable String bookId) {
         UpdateStockRequestDto request = UpdateStockRequestDto.builder()
                 .stock(stock)
                 .bookId(bookId)

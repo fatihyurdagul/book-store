@@ -1,10 +1,11 @@
 package com.bookstore.restapi.controller;
 
 import com.bookstore.restapi.domain.OrderDto;
-import com.bookstore.restapi.domain.request.CreateOrderRequestDto;
+import com.bookstore.restapi.domain.request.OrderItemDto;
 import com.bookstore.restapi.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -19,8 +20,16 @@ public class OrderController {
     private final OrderService orderService;
 
     @PostMapping
-    public ResponseEntity<Boolean> createOrder(@Valid @RequestBody CreateOrderRequestDto request) {
-        return ResponseEntity.ok(orderService.createOrder(request));
+    public ResponseEntity<OrderDto> createOrder(Authentication principal,
+                                                @Valid @RequestBody List<OrderItemDto> request) {
+        String customerId = principal.getCredentials().toString();
+        return ResponseEntity.ok(orderService.createOrder(customerId, request));
+    }
+
+    @GetMapping
+    public ResponseEntity<List<OrderDto>> getCustomerOrders(Authentication principal) {
+        String customerId = principal.getCredentials().toString();
+        return ResponseEntity.ok(orderService.getOrdersByCustomerId(customerId));
     }
 
     @GetMapping("/customer/{customerId}")
@@ -33,7 +42,7 @@ public class OrderController {
         return ResponseEntity.ok(orderService.getOrdersById(orderId));
     }
 
-    @GetMapping
+    @GetMapping("/filter")
     public ResponseEntity<List<OrderDto>> getOrdersByDateRange(@RequestParam("from") Date from, @RequestParam("to") Date to) {
         return ResponseEntity.ok(orderService.filterOrdersByDateRange(from, to));
     }

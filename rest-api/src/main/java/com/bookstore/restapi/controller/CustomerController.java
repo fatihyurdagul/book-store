@@ -2,7 +2,6 @@ package com.bookstore.restapi.controller;
 
 import com.bookstore.restapi.domain.CustomerDto;
 import com.bookstore.restapi.domain.request.CustomerRegisterDto;
-import com.bookstore.restapi.domain.request.LoginRequestDto;
 import com.bookstore.restapi.service.CustomerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

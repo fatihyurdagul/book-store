@@ -1,6 +1,7 @@
 package com.bookstore.domain;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
 
 @Getter
 @Setter

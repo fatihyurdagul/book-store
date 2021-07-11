@@ -6,7 +6,7 @@ import com.bookstore.restapi.domain.request.UpdateStockRequestDto;
 import java.util.List;
 
 public interface StockService {
-    Boolean updateBookOfStock(UpdateStockRequestDto request);
+    StockDto updateBookOfStock(UpdateStockRequestDto request);
 
     List<StockDto> getAllStock();
 }

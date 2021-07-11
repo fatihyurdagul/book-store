@@ -1,10 +1,12 @@
 package com.bookstore.persistence.entity;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import org.springframework.data.annotation.Id;
 import java.math.BigDecimal;
 
 @Document(collection = "books")

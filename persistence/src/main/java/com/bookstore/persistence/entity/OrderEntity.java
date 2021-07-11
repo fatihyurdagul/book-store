@@ -1,11 +1,15 @@
 package com.bookstore.persistence.entity;
 
 import com.bookstore.enums.OrderStatus;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Document(collection = "orders")
@@ -16,7 +20,8 @@ public class OrderEntity {
     @Id
     private String id;
     private String customerId;
-    private List<BookEntity> books;
+    private List<OrderBookEntity> books = new ArrayList<>();
     private OrderStatus status;
     private BigDecimal amount;
+    private Date createdDate;
 }
