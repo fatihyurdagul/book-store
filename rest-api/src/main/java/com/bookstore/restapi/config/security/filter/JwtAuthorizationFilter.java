@@ -1,9 +1,11 @@
 package com.bookstore.restapi.config.security.filter;
 
 import com.bookstore.domain.CustomerDomain;
+import com.bookstore.restapi.domain.response.ErrorResponse;
 import com.bookstore.restapi.exception.JwtTokenException;
 import com.bookstore.restapi.exception.JwtTokenMissingException;
 import com.bookstore.restapi.util.JwtUtil;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -27,21 +29,31 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
         String header = request.getHeader("Authorization");
-        if (header == null || !header.startsWith("Bearer "))
-            throw new JwtTokenMissingException("No JWT token found in request headers");
 
-        String authToken = header.substring(7);
-        CustomerDomain parsedUser = jwtUtil.parsedToken(authToken);
+        try {
+            if (header == null || !header.startsWith("Bearer "))
+                throw new JwtTokenMissingException("No JWT token found in request headers");
 
-        if (parsedUser == null) {
-            SecurityContextHolder.clearContext();
-            throw new JwtTokenException("Jwt token is not valid");
+            String authToken = header.substring(7);
+            CustomerDomain parsedUser = jwtUtil.parsedToken(authToken);
+
+            if (parsedUser == null) {
+                SecurityContextHolder.clearContext();
+                throw new JwtTokenException("Jwt token is not valid");
+            }
+
+            UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(parsedUser.getUsername(), parsedUser.getId(), new ArrayList<>());
+            SecurityContextHolder.getContext().setAuthentication(token);
+            chain.doFilter(request, response);
+
+        } catch (RuntimeException ex) {
+            ErrorResponse errorResponse = ErrorResponse.builder()
+                    .code(-1).message(ex.getMessage())
+                    .build();
+
+            response.setContentType("application/json");
+            response.getWriter().write(new ObjectMapper().writeValueAsString(errorResponse));
         }
-
-        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(parsedUser.getUsername(), parsedUser.getId(), new ArrayList<>());
-        SecurityContextHolder.getContext().setAuthentication(token);
-
-        chain.doFilter(request, response);
 
     }
 }

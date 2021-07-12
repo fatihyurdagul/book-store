@@ -17,7 +17,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class OrderEntity {
+public class OrderEntity extends BaseEntity {
     @Id
     private String id;
     private String customerId;

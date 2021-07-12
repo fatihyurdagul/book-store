@@ -12,7 +12,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CustomerEntity {
+public class CustomerEntity extends BaseEntity {
     @Id
     private String id;
     @Indexed(unique = true)
