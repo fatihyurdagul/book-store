@@ -1,7 +1,6 @@
 package com.bookstore.persistence.adapter;
 
 import com.bookstore.adapter.OrderAdapter;
-import com.bookstore.adapter.StatisticAdapter;
 import com.bookstore.domain.OrderDomain;
 import com.bookstore.domain.PageResponse;
 import com.bookstore.persistence.common.PersistenceAdapter;
@@ -20,7 +19,7 @@ import java.util.stream.Collectors;
 
 @PersistenceAdapter
 @RequiredArgsConstructor
-public class OrderAdapterImpl implements OrderAdapter, StatisticAdapter {
+public class OrderAdapterImpl implements OrderAdapter {
 
     private final OrderRepository repository;
     private final OrderEntityMapper mapper;
@@ -56,4 +55,5 @@ public class OrderAdapterImpl implements OrderAdapter, StatisticAdapter {
                 .totalPages(pageOrderEntity.getTotalPages())
                 .build();
     }
+
 }

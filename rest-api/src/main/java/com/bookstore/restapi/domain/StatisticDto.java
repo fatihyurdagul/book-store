@@ -5,9 +5,10 @@ import lombok.Data;
 import java.math.BigDecimal;
 
 @Data
-public class StatisticDto extends BaseDto {
-    private String month;
-    private Integer totalOrder;
+public class StatisticDto{
+    private String customerId;
+    private int totalOrder;
     private BigDecimal totalAmount;
-    private Integer purchasedBookCount;
+    private int totalPurchaseBookCount;
+    private int month;
 }

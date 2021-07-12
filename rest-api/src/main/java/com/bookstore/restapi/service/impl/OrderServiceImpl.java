@@ -61,7 +61,6 @@ public class OrderServiceImpl implements OrderService {
         return ResponseUtil.buildSuccess(orderDto);
     }
 
-
     @Override
     public ResponseWrapper<List<OrderDto>> getOrdersByCustomerId(String customerId) {
         List<OrderDto> orders = adapter.getOrdersByCustomerId(customerId).stream().map(mapper::toDTO).collect(Collectors.toList());
@@ -90,4 +89,5 @@ public class OrderServiceImpl implements OrderService {
                 .list(mapper.toListDTO(pageableOrder.getList()))
                 .build();
     }
+
 }
