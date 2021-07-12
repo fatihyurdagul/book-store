@@ -45,4 +45,10 @@ public class StockServiceImpl implements StockService {
         List<StockDto> stocks = adapter.getAllBookOfStock().stream().map(mapper::toDTO).collect(Collectors.toList());
         return ResponseUtil.buildSuccess(stocks);
     }
+
+    @Override
+    public ResponseWrapper<StockDto> getStockByBookId(String bookId) {
+        StockDto stocks = adapter.getStockOfBook(bookId).map(mapper::toDTO).get();
+        return ResponseUtil.buildSuccess(stocks);
+    }
 }

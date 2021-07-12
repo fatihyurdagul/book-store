@@ -10,4 +10,6 @@ public interface StockService {
     ResponseWrapper<StockDto> updateBookOfStock(UpdateStockRequestDto request);
 
     ResponseWrapper<List<StockDto>> getAllStock();
+
+    ResponseWrapper<StockDto> getStockByBookId(String bookId);
 }

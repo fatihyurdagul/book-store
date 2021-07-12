@@ -7,5 +7,5 @@ import lombok.Setter;
 @Setter
 public class BaseDto {
     private String id;
-    private Integer version;
+    private Long version;
 }

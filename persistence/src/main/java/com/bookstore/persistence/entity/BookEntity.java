@@ -13,7 +13,7 @@ import java.math.BigDecimal;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class BookEntity {
+public class BookEntity extends BaseEntity {
     @Id
     private String id;
     @Indexed(unique = true)

@@ -3,6 +3,8 @@ package com.bookstore.restapi.aop;
 import com.bookstore.restapi.domain.response.ErrorResponse;
 import com.bookstore.restapi.enums.ErrorCodeEnum;
 import com.bookstore.restapi.exception.CustomRuntimeException;
+import com.bookstore.restapi.exception.JwtTokenException;
+import com.bookstore.restapi.exception.JwtTokenMissingException;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

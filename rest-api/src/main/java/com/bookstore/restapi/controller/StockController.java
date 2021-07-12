@@ -29,4 +29,8 @@ public class StockController {
                 .build();
         return ResponseEntity.ok(stockService.updateBookOfStock(request));
     }
+    @GetMapping("/book/{bookId}")
+    public ResponseEntity<ResponseWrapper<StockDto>> getStockOfBook(@PathVariable String bookId) {
+        return ResponseEntity.ok(stockService.getStockByBookId(bookId));
+    }
 }

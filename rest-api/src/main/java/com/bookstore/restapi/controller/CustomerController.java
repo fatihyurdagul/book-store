@@ -18,7 +18,7 @@ public class CustomerController {
 
     private final CustomerService customerService;
 
-    @PostMapping
+    @PostMapping("/register")
     public ResponseEntity<ResponseWrapper<Boolean>> registerCustomer(@Valid @RequestBody CustomerRegisterDto request) {
         return ResponseEntity.ok(customerService.registerCustomer(request));
     }

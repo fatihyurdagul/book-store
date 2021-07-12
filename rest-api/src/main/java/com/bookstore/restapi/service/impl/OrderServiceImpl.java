@@ -40,7 +40,6 @@ public class OrderServiceImpl implements OrderService {
 
         OrderDomain orderDomain = new OrderDomain(customerId);
 
-        List<StockDomain> stockList = new ArrayList<>();
         for (OrderItemDto order : request) {
             Optional<BookDomain> book = bookAdapter.getBookById(order.getBookId());
             book.orElseThrow(() -> new CustomRuntimeException(ErrorCodeEnum.CONTENT_NOT_FOUND));
@@ -51,12 +50,11 @@ public class OrderServiceImpl implements OrderService {
 
             StockDomain stockDomain = stockOfBook.get();
             stockDomain.updateStockOfBook(order.getQuantity());
-            stockList.add(stockDomain);
 
             orderDomain.addItem(book.get(), order.getQuantity());
+            stockAdapter.updateStockOfBook(stockDomain);
         }
 
-        stockAdapter.updateStockOfMultipleBook(stockList);
         OrderDto orderDto = mapper.toDTO(adapter.saveOrder(orderDomain));
         return ResponseUtil.buildSuccess(orderDto);
     }
