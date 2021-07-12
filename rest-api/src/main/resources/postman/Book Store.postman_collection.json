@@ -100,12 +100,12 @@
 							}
 						],
 						"url": {
-							"raw": "{{protocol}}{{host}}{{port}}{{prefix}}{{version}}{{customer}}/sad",
+							"raw": "{{protocol}}{{host}}{{port}}{{prefix}}{{version}}{{customer}}/",
 							"host": [
 								"{{protocol}}{{host}}{{port}}{{prefix}}{{version}}{{customer}}"
 							],
 							"path": [
-								"sad"
+								""
 							]
 						}
 					},
