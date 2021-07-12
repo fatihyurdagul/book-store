@@ -1,8 +1,9 @@
 package com.bookstore.adapter;
 
 import com.bookstore.domain.OrderDomain;
+import com.bookstore.domain.PageResponse;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,5 +15,5 @@ public interface OrderAdapter {
 
     Optional<OrderDomain> getOrdersById(String orderId);
 
-    List<OrderDomain> filterOrdersByDateRange(Date from, Date to);
+    PageResponse<OrderDomain> filterOrdersByDateRange(LocalDate from, LocalDate to, int page, int size);
 }

@@ -1,15 +1,17 @@
 package com.bookstore.restapi.controller;
 
+import com.bookstore.domain.PageResponse;
 import com.bookstore.restapi.domain.OrderDto;
 import com.bookstore.restapi.domain.request.OrderItemDto;
 import com.bookstore.restapi.service.OrderService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -43,7 +45,10 @@ public class OrderController {
     }
 
     @GetMapping("/filter")
-    public ResponseEntity<List<OrderDto>> getOrdersByDateRange(@RequestParam("from") Date from, @RequestParam("to") Date to) {
-        return ResponseEntity.ok(orderService.filterOrdersByDateRange(from, to));
+    public ResponseEntity<PageResponse<OrderDto>> getOrdersByDateRange(@RequestParam("from") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from,
+                                                                       @RequestParam("to") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to,
+                                                                       @RequestParam(value = "page", required = false, defaultValue = "0") Integer page,
+                                                                       @RequestParam(value = "size", required = false, defaultValue = "5") Integer size) {
+        return ResponseEntity.ok(orderService.filterOrdersByDateRange(from, to , page, size));
     }
 }

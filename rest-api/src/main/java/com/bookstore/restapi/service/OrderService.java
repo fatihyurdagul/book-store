@@ -1,9 +1,10 @@
 package com.bookstore.restapi.service;
 
+import com.bookstore.domain.PageResponse;
 import com.bookstore.restapi.domain.OrderDto;
 import com.bookstore.restapi.domain.request.OrderItemDto;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 public interface OrderService {
@@ -14,5 +15,5 @@ public interface OrderService {
 
     OrderDto getOrdersById(String orderId);
 
-    List<OrderDto> filterOrdersByDateRange(Date from, Date to);
+    PageResponse<OrderDto> filterOrdersByDateRange(LocalDate from, LocalDate to, Integer page, Integer size);
 }

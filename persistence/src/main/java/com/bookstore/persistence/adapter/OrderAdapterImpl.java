@@ -1,21 +1,26 @@
 package com.bookstore.persistence.adapter;
 
 import com.bookstore.adapter.OrderAdapter;
+import com.bookstore.adapter.StatisticAdapter;
 import com.bookstore.domain.OrderDomain;
+import com.bookstore.domain.PageResponse;
 import com.bookstore.persistence.common.PersistenceAdapter;
 import com.bookstore.persistence.entity.OrderEntity;
 import com.bookstore.persistence.mapper.OrderEntityMapper;
 import com.bookstore.persistence.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 @PersistenceAdapter
 @RequiredArgsConstructor
-public class OrderAdapterImpl implements OrderAdapter {
+public class OrderAdapterImpl implements OrderAdapter, StatisticAdapter {
 
     private final OrderRepository repository;
     private final OrderEntityMapper mapper;
@@ -38,8 +43,17 @@ public class OrderAdapterImpl implements OrderAdapter {
     }
 
     @Override
-    public List<OrderDomain> filterOrdersByDateRange(Date from, Date to) {
-        return repository.findOrderEntityByCreatedDateBetween(from, to).stream()
-                .map(mapper::toDomainObject).collect(Collectors.toList());
+    public PageResponse<OrderDomain> filterOrdersByDateRange(LocalDate from, LocalDate to, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+
+        Page<OrderEntity> pageOrderEntity = repository.findOrderEntityByCreatedDateBetween(from, to, pageable);
+
+        return PageResponse.<OrderDomain>builder()
+                .list(mapper.toListDomainObject(pageOrderEntity.toList()))
+                .page(page)
+                .size(pageOrderEntity.getSize())
+                .totalContent(pageOrderEntity.getTotalElements())
+                .totalPages(pageOrderEntity.getTotalPages())
+                .build();
     }
 }

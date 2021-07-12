@@ -5,6 +5,7 @@ import com.bookstore.adapter.OrderAdapter;
 import com.bookstore.adapter.StockAdapter;
 import com.bookstore.domain.BookDomain;
 import com.bookstore.domain.OrderDomain;
+import com.bookstore.domain.PageResponse;
 import com.bookstore.domain.StockDomain;
 import com.bookstore.restapi.domain.OrderDto;
 import com.bookstore.restapi.domain.request.OrderItemDto;
@@ -15,8 +16,8 @@ import com.bookstore.restapi.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -73,7 +74,17 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<OrderDto> filterOrdersByDateRange(Date from, Date to) {
-        return adapter.filterOrdersByDateRange(from, to).stream().map(mapper::toDTO).collect(Collectors.toList());
+    public PageResponse<OrderDto> filterOrdersByDateRange(LocalDate from, LocalDate to, Integer page, Integer size) {
+        int newSize = Integer.max(size, 0);
+        int newPage = Integer.max(page, 0);
+        PageResponse<OrderDomain> pageableOrder = adapter.filterOrdersByDateRange(from, to, newPage, newSize);
+
+        return PageResponse.<OrderDto>builder()
+                .totalPages(pageableOrder.getTotalPages())
+                .totalContent(pageableOrder.getTotalContent())
+                .size(pageableOrder.getSize())
+                .page(pageableOrder.getPage())
+                .list(mapper.toListDTO(pageableOrder.getList()))
+                .build();
     }
 }

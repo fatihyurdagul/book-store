@@ -5,10 +5,8 @@ import com.bookstore.adapter.StockAdapter;
 import com.bookstore.domain.BookDomain;
 import com.bookstore.domain.StockDomain;
 import com.bookstore.restapi.domain.BookDto;
-import com.bookstore.restapi.domain.request.UpdateStockRequestDto;
 import com.bookstore.restapi.mapper.BookDtoMapper;
 import com.bookstore.restapi.service.BookService;
-import com.bookstore.restapi.service.StockService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
