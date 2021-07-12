@@ -9,10 +9,12 @@ import com.bookstore.domain.PageResponse;
 import com.bookstore.domain.StockDomain;
 import com.bookstore.restapi.domain.OrderDto;
 import com.bookstore.restapi.domain.request.OrderItemDto;
+import com.bookstore.restapi.domain.response.ResponseWrapper;
 import com.bookstore.restapi.enums.ErrorCodeEnum;
 import com.bookstore.restapi.exception.CustomRuntimeException;
 import com.bookstore.restapi.mapper.OrderDtoMapper;
 import com.bookstore.restapi.service.OrderService;
+import com.bookstore.restapi.util.ResponseUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -32,7 +34,7 @@ public class OrderServiceImpl implements OrderService {
     private final OrderDtoMapper mapper;
 
     @Override
-    public OrderDto createOrder(String customerId, List<OrderItemDto> request) {
+    public ResponseWrapper<OrderDto> createOrder(String customerId, List<OrderItemDto> request) {
         if (request.isEmpty())
             throw new CustomRuntimeException(ErrorCodeEnum.FIELD_VALIDATION_ERROR);
 
@@ -55,22 +57,23 @@ public class OrderServiceImpl implements OrderService {
         }
 
         stockAdapter.updateStockOfMultipleBook(stockList);
-
-        return mapper.toDTO(adapter.saveOrder(orderDomain));
+        OrderDto orderDto = mapper.toDTO(adapter.saveOrder(orderDomain));
+        return ResponseUtil.buildSuccess(orderDto);
     }
 
 
     @Override
-    public List<OrderDto> getOrdersByCustomerId(String customerId) {
-        return adapter.getOrdersByCustomerId(customerId).stream().map(mapper::toDTO).collect(Collectors.toList());
+    public ResponseWrapper<List<OrderDto>> getOrdersByCustomerId(String customerId) {
+        List<OrderDto> orders = adapter.getOrdersByCustomerId(customerId).stream().map(mapper::toDTO).collect(Collectors.toList());
+        return ResponseUtil.buildSuccess(orders);
     }
 
     @Override
-    public OrderDto getOrdersById(String orderId) {
+    public ResponseWrapper<OrderDto> getOrdersById(String orderId) {
         Optional<OrderDomain> order = adapter.getOrdersById(orderId);
         order.orElseThrow(() -> new CustomRuntimeException(ErrorCodeEnum.CONTENT_NOT_FOUND));
-
-        return order.map(mapper::toDTO).get();
+        OrderDto orderDto = order.map(mapper::toDTO).get();
+        return ResponseUtil.buildSuccess(orderDto);
     }
 
     @Override

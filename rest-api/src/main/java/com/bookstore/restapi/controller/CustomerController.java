@@ -2,6 +2,7 @@ package com.bookstore.restapi.controller;
 
 import com.bookstore.restapi.domain.CustomerDto;
 import com.bookstore.restapi.domain.request.CustomerRegisterDto;
+import com.bookstore.restapi.domain.response.ResponseWrapper;
 import com.bookstore.restapi.service.CustomerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -18,14 +19,12 @@ public class CustomerController {
     private final CustomerService customerService;
 
     @PostMapping
-    public ResponseEntity<Boolean> registerCustomer(@Valid @RequestBody CustomerRegisterDto request) {
-        Boolean result = customerService.registerCustomer(request);
-        return ResponseEntity.ok(result);
+    public ResponseEntity<ResponseWrapper<Boolean>> registerCustomer(@Valid @RequestBody CustomerRegisterDto request) {
+        return ResponseEntity.ok(customerService.registerCustomer(request));
     }
 
     @GetMapping
-    public ResponseEntity<List<CustomerDto>> getAllCustomers() {
-        List<CustomerDto> allCustomers = customerService.getAllCustomers();
-        return ResponseEntity.ok(allCustomers);
+    public ResponseEntity<ResponseWrapper<List<CustomerDto>>> getAllCustomers() {
+        return ResponseEntity.ok(customerService.getAllCustomers());
     }
 }

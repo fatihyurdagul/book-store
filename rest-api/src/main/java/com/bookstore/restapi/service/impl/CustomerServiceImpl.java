@@ -5,10 +5,12 @@ import com.bookstore.domain.CustomerDomain;
 import com.bookstore.restapi.config.security.CustomerPrincipal;
 import com.bookstore.restapi.domain.CustomerDto;
 import com.bookstore.restapi.domain.request.CustomerRegisterDto;
+import com.bookstore.restapi.domain.response.ResponseWrapper;
 import com.bookstore.restapi.enums.ErrorCodeEnum;
 import com.bookstore.restapi.exception.CustomRuntimeException;
 import com.bookstore.restapi.mapper.CustomerDtoMapper;
 import com.bookstore.restapi.service.CustomerService;
+import com.bookstore.restapi.util.ResponseUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -26,14 +28,16 @@ public class CustomerServiceImpl implements CustomerService {
     private final CustomerAdapter adapter;
 
     @Override
-    public Boolean registerCustomer(CustomerRegisterDto request) {
+    public ResponseWrapper<Boolean> registerCustomer(CustomerRegisterDto request) {
         CustomerDomain customerDomain = mapper.toDomainObjectFromLogin(request);
-        return adapter.saveCustomer(customerDomain);
+        Boolean registerResult = adapter.saveCustomer(customerDomain);
+        return registerResult ? ResponseUtil.buildSuccess(Boolean.TRUE) : ResponseUtil.buildError();
     }
 
     @Override
-    public List<CustomerDto> getAllCustomers() {
-        return adapter.getAllCustomers().stream().map(mapper::toDTO).collect(Collectors.toList());
+    public ResponseWrapper<List<CustomerDto>> getAllCustomers() {
+        List<CustomerDto> customers = adapter.getAllCustomers().stream().map(mapper::toDTO).collect(Collectors.toList());
+        return ResponseUtil.buildSuccess(customers);
     }
 
     @Override

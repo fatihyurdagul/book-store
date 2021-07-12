@@ -3,6 +3,7 @@ package com.bookstore.restapi.controller;
 import com.bookstore.domain.PageResponse;
 import com.bookstore.restapi.domain.OrderDto;
 import com.bookstore.restapi.domain.request.OrderItemDto;
+import com.bookstore.restapi.domain.response.ResponseWrapper;
 import com.bookstore.restapi.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -22,25 +23,25 @@ public class OrderController {
     private final OrderService orderService;
 
     @PostMapping
-    public ResponseEntity<OrderDto> createOrder(Authentication principal,
-                                                @Valid @RequestBody List<OrderItemDto> request) {
+    public ResponseEntity<ResponseWrapper<OrderDto>> createOrder(Authentication principal,
+                                                                @Valid @RequestBody List<OrderItemDto> request) {
         String customerId = principal.getCredentials().toString();
         return ResponseEntity.ok(orderService.createOrder(customerId, request));
     }
 
     @GetMapping
-    public ResponseEntity<List<OrderDto>> getCustomerOrders(Authentication principal) {
+    public ResponseEntity<ResponseWrapper<List<OrderDto>>> getCustomerOrders(Authentication principal) {
         String customerId = principal.getCredentials().toString();
         return ResponseEntity.ok(orderService.getOrdersByCustomerId(customerId));
     }
 
     @GetMapping("/customer/{customerId}")
-    public ResponseEntity<List<OrderDto>> getOrdersByCustomerId(@PathVariable String customerId) {
+    public ResponseEntity<ResponseWrapper<List<OrderDto>>> getOrdersByCustomerId(@PathVariable String customerId) {
         return ResponseEntity.ok(orderService.getOrdersByCustomerId(customerId));
     }
 
     @GetMapping("/{orderId}")
-    public ResponseEntity<OrderDto> getOrdersById(@PathVariable String orderId) {
+    public ResponseEntity<ResponseWrapper<OrderDto>> getOrdersById(@PathVariable String orderId) {
         return ResponseEntity.ok(orderService.getOrdersById(orderId));
     }
 

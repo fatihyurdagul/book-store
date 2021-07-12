@@ -1,6 +1,7 @@
 package com.bookstore.restapi.controller;
 
 import com.bookstore.restapi.domain.BookDto;
+import com.bookstore.restapi.domain.response.ResponseWrapper;
 import com.bookstore.restapi.service.BookService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -17,13 +18,12 @@ public class BookController {
     private final BookService bookService;
 
     @GetMapping
-    public ResponseEntity<List<BookDto>> getAll() {
-        List<BookDto> all = bookService.getAllBook();
-        return ResponseEntity.ok(all);
+    public ResponseEntity<ResponseWrapper<List<BookDto>>> getAll() {
+        return ResponseEntity.ok(bookService.getAllBook());
     }
 
     @PostMapping
-    public ResponseEntity<BookDto> addBook(@Valid @RequestBody BookDto request) {
+    public ResponseEntity<ResponseWrapper<BookDto>> addBook(@Valid @RequestBody BookDto request) {
         return ResponseEntity.ok(bookService.createBook(request));
     }
 }

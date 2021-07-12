@@ -1,9 +1,10 @@
 package com.bookstore.restapi.service;
 
 import com.bookstore.restapi.domain.StatisticDto;
+import com.bookstore.restapi.domain.response.ResponseWrapper;
 
 import java.util.List;
 
 public interface StatisticService {
-    List<StatisticDto> getMonthlyStatistic(String customerId);
+    ResponseWrapper<List<StatisticDto>> getMonthlyStatistic(String customerId);
 }

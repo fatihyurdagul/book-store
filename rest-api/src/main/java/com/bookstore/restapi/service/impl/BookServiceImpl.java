@@ -5,8 +5,10 @@ import com.bookstore.adapter.StockAdapter;
 import com.bookstore.domain.BookDomain;
 import com.bookstore.domain.StockDomain;
 import com.bookstore.restapi.domain.BookDto;
+import com.bookstore.restapi.domain.response.ResponseWrapper;
 import com.bookstore.restapi.mapper.BookDtoMapper;
 import com.bookstore.restapi.service.BookService;
+import com.bookstore.restapi.util.ResponseUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -22,18 +24,19 @@ public class BookServiceImpl implements BookService {
     private final BookDtoMapper mapper;
 
     @Override
-    public BookDto createBook(BookDto request) {
+    public ResponseWrapper<BookDto> createBook(BookDto request) {
         BookDomain bookDomain = mapper.toDomainObject(request);
         BookDomain result = bookAdapter.saveBook(bookDomain);
         // TODO : get stock info from request
-        StockDomain stockDomain = new StockDomain(result.getId(),0);
+        StockDomain stockDomain = new StockDomain(result.getId(), 0);
         stockAdapter.createStockOfBook(stockDomain);
 
-        return mapper.toDTO(result);
+        return ResponseUtil.buildSuccess(mapper.toDTO(result));
     }
 
     @Override
-    public List<BookDto> getAllBook() {
-        return bookAdapter.getAllBook().stream().map(mapper::toDTO).collect(Collectors.toList());
+    public ResponseWrapper<List<BookDto>> getAllBook() {
+        List<BookDto> bookList = bookAdapter.getAllBook().stream().map(mapper::toDTO).collect(Collectors.toList());
+        return ResponseUtil.buildSuccess(bookList);
     }
 }

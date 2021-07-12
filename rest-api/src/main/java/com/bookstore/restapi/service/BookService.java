@@ -1,11 +1,12 @@
 package com.bookstore.restapi.service;
 
 import com.bookstore.restapi.domain.BookDto;
+import com.bookstore.restapi.domain.response.ResponseWrapper;
 
 import java.util.List;
 
 public interface BookService {
-    BookDto createBook(BookDto request);
+    ResponseWrapper<BookDto> createBook(BookDto request);
 
-    List<BookDto> getAllBook();
+    ResponseWrapper<List<BookDto>> getAllBook();
 }

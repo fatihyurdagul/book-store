@@ -1,6 +1,7 @@
 package com.bookstore.restapi.controller;
 
 import com.bookstore.restapi.domain.StatisticDto;
+import com.bookstore.restapi.domain.response.ResponseWrapper;
 import com.bookstore.restapi.service.StatisticService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +20,7 @@ public class StatisticController {
     private final StatisticService statisticService;
 
     @GetMapping("/customers/{customerId}")
-    public ResponseEntity<List<StatisticDto>> getMonthlyStatistic(@PathVariable String customerId) {
+    public ResponseEntity<ResponseWrapper<List<StatisticDto>>> getMonthlyStatistic(@PathVariable String customerId) {
         return ResponseEntity.ok(statisticService.getMonthlyStatistic(customerId));
     }
 }
