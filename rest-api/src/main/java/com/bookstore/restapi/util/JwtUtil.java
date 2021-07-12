@@ -1,12 +1,10 @@
 package com.bookstore.restapi.util;
 
 import com.bookstore.domain.CustomerDomain;
+import com.bookstore.restapi.config.security.CustomerPrincipal;
 import io.jsonwebtoken.*;
-import lombok.extern.log4j.Log4j2;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 @Slf4j
@@ -25,19 +23,10 @@ public class JwtUtil {
 
             CustomerDomain customer = new CustomerDomain();
             customer.setUsername(body.getSubject());
-//            customer.setId(body.get("userId").toString());
+            customer.setId(body.get("id").toString());
 
             return customer;
 
-        } catch (JwtException | ClassCastException e) {
-            return null;
-        }
-    }
-
-    public boolean validateJwtToken(String authToken) {
-        try {
-            Jwts.parser().setSigningKey(secret).parseClaimsJws(authToken);
-            return true;
         } catch (SignatureException e) {
             log.error("Invalid JWT signature: {}", e.getMessage());
         } catch (MalformedJwtException e) {
@@ -49,13 +38,12 @@ public class JwtUtil {
         } catch (IllegalArgumentException e) {
             log.error("JWT claims string is empty: {}", e.getMessage());
         }
-
-        return false;
+        return null;
     }
 
-    public String generateToken(UserDetails user) {
+    public String generateToken(CustomerPrincipal user) {
         Claims claims = Jwts.claims().setSubject(user.getUsername());
-//        claims.put("userId", customer.getId() + "");
+        claims.put("id", user.getCustomerId());
 
         return Jwts.builder()
                 .setClaims(claims)

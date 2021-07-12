@@ -9,6 +9,7 @@ import com.bookstore.persistence.repository.BookRepository;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @PersistenceAdapter
@@ -19,14 +20,18 @@ public class BookAdapterImpl implements BookAdapter {
     private final BookEntityMapper mapper;
 
     @Override
-    public Boolean saveBook(BookDomain request) {
+    public BookDomain saveBook(BookDomain request) {
         BookEntity bookEntity = mapper.toEntity(request);
-        BookEntity save = repository.save(bookEntity);
-        return save != null;
+        return mapper.toDomainObject(repository.save(bookEntity));
     }
 
     @Override
     public List<BookDomain> getAllBook() {
         return repository.findAll().stream().map(mapper::toDomainObject).collect(Collectors.toList());
+    }
+
+    @Override
+    public Optional<BookDomain> getBookById(String bookId) {
+        return repository.findById(bookId).stream().map(mapper::toDomainObject).findFirst();
     }
 }

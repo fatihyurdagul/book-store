@@ -38,7 +38,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
             throw new JwtTokenException("Jwt token is not valid");
         }
 
-        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(parsedUser.getUsername(), null, new ArrayList<>());
+        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(parsedUser.getUsername(), parsedUser.getId(), new ArrayList<>());
         SecurityContextHolder.getContext().setAuthentication(token);
 
         chain.doFilter(request, response);

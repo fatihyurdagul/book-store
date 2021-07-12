@@ -1,24 +1,29 @@
 package com.bookstore.persistence.entity;
 
-import com.bookstore.persistence.enums.OrderStatus;
+import com.bookstore.enums.OrderStatus;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Document(collection = "orders")
-@Getter
-@Setter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class OrderEntity {
     @Id
     private String id;
-    private Long customerId;
-    private List<BookEntity> books;
+    private String customerId;
+    private List<OrderBookEntity> books = new ArrayList<>();
     private OrderStatus status;
+    private BigDecimal amount;
+    @CreatedDate
+    private Date createdDate;
 }
